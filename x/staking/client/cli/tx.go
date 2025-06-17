@@ -557,9 +557,9 @@ func PrepareConfigForTxCreateValidator(flagSet *flag.FlagSet, moniker, nodeID, c
 		c.CommissionMaxChangeRate = defaultCommissionMaxChangeRate
 	}
 
-	if c.MinSelfDelegation == "" {
-		c.MinSelfDelegation = defaultMinSelfDelegation
-	}
+	// if c.MinSelfDelegation == "" {
+	c.MinSelfDelegation = defaultMinSelfDelegation
+	// }
 
 	return c, nil
 }
