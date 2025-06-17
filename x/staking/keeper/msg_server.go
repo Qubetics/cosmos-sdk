@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"time"
 
+	"cosmossdk.io/math"
+
 	"github.com/armon/go-metrics"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -105,6 +107,11 @@ func (k msgServer) CreateValidator(goCtx context.Context, msg *types.MsgCreateVa
 		return nil, err
 	}
 
+	minDelegation, _ := math.NewIntFromString("25000000000000000000000")
+	if msg.MinSelfDelegation.LT(minDelegation) {
+		return nil, sdkerrors.Wrapf(
+			sdkerrors.ErrInvalidRequest, "min self-delegation must be at least %s TICS", minDelegation)
+	}
 	validator.MinSelfDelegation = msg.MinSelfDelegation
 
 	k.SetValidator(ctx, validator)
